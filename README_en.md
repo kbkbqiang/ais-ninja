@@ -10,6 +10,23 @@ ais-ninja is a chatgpt based web application. It is based on the [ChatGpt-Web](h
 * Support multiple languages.
 * Support plug-in system like OpenAI GPT-4.
 
+## Plugin list
+
+> Welcome to contribute the plug-ins you develop. How to develop them can be found
+> in [Plugin Development](#chatgpt-plugin-development)。
+
+| plugin name                            | introduction                             |
+|----------------------------------------|------------------------------------------|
+| [Baidu Search](plugins%2Fbaidu-search) | Baidu search                             |
+| [DuckDuckGo](plugins%2FDuckDuckGo)     | DuckDuckGo search                        |
+| [Google Search](plugins%2Fgoogle)      | google search                            |
+| [imdb](plugins%2Fimdb)                 | IMDB Movie Search (API requires payment) |
+| [internet](plugins%2Finternet)         | networking plug-in                       |
+| [ipinfo.io](plugins%2Fipinfo.io)       | ip information query                     |
+| [newsdata.io](plugins%2Fnewsdata.io)   | news inquiry                             |
+| [seniverse](plugins%2Fseniverse)       | weather query                            |
+| [themoviedb](plugins%2Fthemoviedb)     | Movie Information Inquiry                |
+
 ## How to deploy
 
 ### docker
@@ -26,15 +43,8 @@ docker run -d \
     -e DATABASE_USER=root     \
     -e DATABASE_PASSWORD=123456     \
     -e DATABASE_SYNC='true'     \
-    -e REDIS_URL=redis://${url}:6379/0     \
-    -e EMAIL_HOST=smtp.office365.com     \
-    -e EMAIL_PORT=587     \
-    -e EMAIL_FROM=     \
-    -e EMAIL_AUTH_USER=     \
-    -e EMAIL_AUTH_PASS=     \
-    -e SOCIAL_GOOGLE_CLIENT_ID=     \
-    -e VITE_APP_REQUEST_HOST=     \
-    jarvis2f/ais-ninja:1.0.0
+    -e REDIS_URL=redis://${url}:6379/0  \
+    jarvis2f/ais-ninja:1.0.2
 ```
 
 ### docker-compose
@@ -84,14 +94,20 @@ admin address：`http://localhost:6789/admin`
 | `DATABASE_PASSWORD`       | Database password.                                                             |
 | `DATABASE_SYNC`           | Automatically synchronize model to database. true or false                     |
 | `REDIS_URL`               | Redis url.format: redis[s]://[[username][:password]@][host][:port][/db-number] |
+| `EMAIL_ENABLE`            | Enable email login registration. true or false                                 |
 | `EMAIL_HOST`              | Email host.                                                                    |
 | `EMAIL_PORT`              | Email port.                                                                    |
 | `EMAIL_FROM`              | Email from.                                                                    |
 | `EMAIL_AUTH_USER`         | Email auth user.                                                               |
 | `EMAIL_AUTH_PASS`         | Email auth pass.                                                               |
 | `SOCIAL_GOOGLE_CLIENT_ID` | Google client id.                                                              |
+| `ALI_ACCESS_KEY_ID`       | Alibaba Cloud accessKeyId                                                      |
+| `ALI_ACCESS_KEY_SECRET`   | Alibaba Cloud accessKeySecret                                                  |
+| `ALI_SMS_ENABLE`          | Enable mobile login registration true or false                                 |
+| `ALI_SMS_SIGN_NAME`       | Alibaba Cloud SMS Verification Code Service Signature                          |
+| `ALI_SMS_TEMPLATE_CODE`   | Alibaba Cloud verification code SMS template, which needs to include {code}    |
 
-## ChatGPT Plugin
+## ChatGPT Plugin Development
 
 After the project starts, you can go to the admin -> Fill in the warehouse address in the system
 configuration：`https://github.com/jarvis2f/ais-ninja.git` Import the plugins under [plugins](./plugins) in this
@@ -137,9 +153,9 @@ Available libraries:
 * [jsdom](https://github.com/jsdom/jsdom) manipulating the DOM
 * [puppeteer-core](https://www.npmjs.com/package/puppeteer-core) mock browser
 * ais Some functions provided by the ais_ninja system
-   * ais.createCompletion Call OpenAI's Completion API
-   * ais.createChatCompletion Call OpenAI's Chat Completion API
-   * ais_progress(content:string) No require required, return to the user the call progress of the current method
+    * ais.createCompletion Call OpenAI's Completion API
+    * ais.createChatCompletion Call OpenAI's Chat Completion API
+    * ais_progress(content:string) No require required, return to the user the call progress of the current method
 
 [plugins](./plugins) directory format：
 
@@ -167,7 +183,8 @@ variable in the code.
 
 ### Plugin Logs
 
-Logs can be printed using `console.log`. Turn on the debug button on the plugin page, and the log will be output to the console of the browser.
+Logs can be printed using `console.log`. Turn on the debug button on the plugin page, and the log will be output to the
+console of the browser.
 
 ```
 📣📣📣function_call - [seniverse](search_weather)(ae9bc196-4bfe-43a9-8060-2d2e2ec601c5)

@@ -12,6 +12,22 @@ ais-ninja 是一个基于 chatgpt 的 Web 应用程序。它基于 [ChatGpt-Web]
 * 多语言支持。
 * 支持插件系统。
 
+## 插件列表
+
+> 欢迎贡献你开发的插件，如何开发可以查看 [插件开发文档](#插件开发)。
+
+| 插件名称                                   | 插件介绍              |
+|----------------------------------------|-------------------|
+| [Baidu Search](plugins%2Fbaidu-search) | 百度搜索              |
+| [DuckDuckGo](plugins%2FDuckDuckGo)     | DuckDuckGo 搜索     |
+| [Google Search](plugins%2Fgoogle)      | 谷歌搜索              |
+| [imdb](plugins%2Fimdb)                 | IMDB电影搜索（API需要付费） |
+| [internet](plugins%2Finternet)         | 联网插件              |
+| [ipinfo.io](plugins%2Fipinfo.io)       | ip 信息查询           |
+| [newsdata.io](plugins%2Fnewsdata.io)   | 新闻查询              |
+| [seniverse](plugins%2Fseniverse)       | 天气查询              |
+| [themoviedb](plugins%2Fthemoviedb)     | 电影信息查询            |
+
 ## 部署
 
 ### docker
@@ -29,14 +45,7 @@ docker run -d \
     -e DATABASE_PASSWORD=123456     \
     -e DATABASE_SYNC='true'     \
     -e REDIS_URL=redis://${url}:6379/0     \
-    -e EMAIL_HOST=smtp.office365.com     \
-    -e EMAIL_PORT=587     \
-    -e EMAIL_FROM=     \
-    -e EMAIL_AUTH_USER=     \
-    -e EMAIL_AUTH_PASS=     \
-    -e SOCIAL_GOOGLE_CLIENT_ID=     \
-    -e VITE_APP_REQUEST_HOST=     \
-    jarvis2f/ais-ninja:v1.0.1
+    jarvis2f/ais-ninja:v1.0.2
 ```
 
 ### docker-compose
@@ -85,14 +94,20 @@ docker run -d \
 | `DATABASE_PASSWORD`       | 数据库密码                                                                     |
 | `DATABASE_SYNC`           | 项目启动是否自动同步数据库表结构。 true or false                                           |
 | `REDIS_URL`               | Redis 地址，格式: redis[s]://[[username][:password]@][host][:port][/db-number] |
+| `EMAIL_ENABLE`            | 启用邮箱登录注册 true or false                                                    |
 | `EMAIL_HOST`              | 邮箱服务地址                                                                    |
 | `EMAIL_PORT`              | 邮箱服务端口                                                                    |
 | `EMAIL_FROM`              | 邮箱服务发送方邮箱地址                                                               |
 | `EMAIL_AUTH_USER`         | 邮箱服务用户名                                                                   |
 | `EMAIL_AUTH_PASS`         | 邮箱服务密码                                                                    |
 | `SOCIAL_GOOGLE_CLIENT_ID` | 谷歌登录的client_id                                                            |
+| `ALI_ACCESS_KEY_ID`       | 阿里云 accessKeyId                                                           |
+| `ALI_ACCESS_KEY_SECRET`   | 阿里云 accessKeySecret                                                       |
+| `ALI_SMS_ENABLE`          | 启用手机登录注册 true or false                                                    |
+| `ALI_SMS_SIGN_NAME`       | 阿里云短信验证码服务签名                                                              |
+| `ALI_SMS_TEMPLATE_CODE`   | 阿里云验证码短信模板，需要包含 {code}                                                    |
 
-## 插件
+## 插件开发
 
 项目启动之后可以到后台 -> 系统配置中填写仓库地址：`https://github.com/jarvis2f/ais-ninja.git`
 导入本仓库 [plugins](./plugins) 下的插件。
@@ -135,9 +150,9 @@ docker run -d \
 * [jsdom](https://github.com/jsdom/jsdom) 操作 DOM
 * [puppeteer-core](https://www.npmjs.com/package/puppeteer-core) 模拟浏览器
 * ais ais_ninja 提供的一些函数
-  * ais.createCompletion 调用 OpenAI 的 Completion API
-  * ais.createChatCompletion 调用 OpenAI 的 Chat Completion API
-  * ais_progress(content:string) 不需要 require,返回给用户当前方法的调用进度
+    * ais.createCompletion 调用 OpenAI 的 Completion API
+    * ais.createChatCompletion 调用 OpenAI 的 Chat Completion API
+    * ais_progress(content:string) 不需要 require,返回给用户当前方法的调用进度
 
 [plugins](./plugins) 目录格式：
 
